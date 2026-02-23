@@ -67,44 +67,6 @@
       border: 1px solid var(--border);
     }
     
-    .tabs {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 24px;
-      flex-wrap: wrap;
-    }
-    
-    .tab-btn {
-      padding: 10px 16px;
-      background: var(--glass);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      color: var(--muted);
-      cursor: pointer;
-      font-size: 14px;
-      transition: all 0.3s ease;
-    }
-    
-    .tab-btn:hover {
-      background: rgba(124, 58, 237, 0.1);
-      color: var(--text);
-    }
-    
-    .tab-btn.active {
-      background: linear-gradient(90deg, var(--accent), var(--accent-light));
-      color: white;
-      border-color: var(--accent);
-    }
-    
-    .tab-content {
-      display: none;
-    }
-    
-    .tab-content.active {
-      display: block;
-      animation: fadeIn 0.4s ease;
-    }
-    
     .form-section {
       margin-bottom: 24px;
       padding-bottom: 24px;
@@ -282,11 +244,6 @@
       transition: width 0.5s ease;
     }
     
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
     @media (max-width: 768px) {
       .grid {
         grid-template-columns: 1fr;
@@ -294,11 +251,6 @@
       
       .card {
         padding: 20px;
-      }
-      
-      .tabs {
-        overflow-x: auto;
-        padding-bottom: 8px;
       }
       
       .actions {
@@ -320,11 +272,6 @@
       header h1 {
         font-size: 24px;
       }
-      
-      .tab-btn {
-        padding: 8px 12px;
-        font-size: 13px;
-      }
     }
   </style>
 </head>
@@ -340,16 +287,10 @@
     </div>
     
     <div class="card">
-      <div class="tabs">
-        <button class="tab-btn active" data-tab="pessoal"><i class="fas fa-user"></i> Dados Pessoais</button>
-        <button class="tab-btn" data-tab="documentos"><i class="fas fa-id-card"></i> Documentos</button>
-        <button class="tab-btn" data-tab="contato"><i class="fas fa-phone"></i> Contato</button>
-        <button class="tab-btn" data-tab="endereco"><i class="fas fa-home"></i> Endereço</button>
-      </div>
-      
       <form id="clientForm" autocomplete="on">
         <!-- Dados Pessoais -->
-        <div class="tab-content active" id="pessoal-tab">
+        <div class="form-section">
+          <h3><i class="fas fa-user"></i> Dados Pessoais</h3>
           <div class="grid">
             <div class="form-group">
               <label for="nome">Nome Completo *</label>
@@ -420,7 +361,8 @@
         </div>
         
         <!-- Documentos -->
-        <div class="tab-content" id="documentos-tab">
+        <div class="form-section">
+          <h3><i class="fas fa-id-card"></i> Documentos</h3>
           <div class="grid">
             <div class="form-group">
               <label for="cpf">CPF *</label>
@@ -486,7 +428,8 @@
         </div>
         
         <!-- Contato -->
-        <div class="tab-content" id="contato-tab">
+        <div class="form-section">
+          <h3><i class="fas fa-phone"></i> Contato</h3>
           <div class="grid">
             <div class="form-group">
               <label for="email">Email *</label>
@@ -512,7 +455,8 @@
         </div>
         
         <!-- Endereço -->
-        <div class="tab-content" id="endereco-tab">
+        <div class="form-section">
+          <h3><i class="fas fa-home"></i> Endereço</h3>
           <div class="grid">
             <div class="form-group">
               <label for="cep">CEP *</label>
@@ -523,10 +467,10 @@
             </div>
             
             <div class="form-group">
-              <label for="logradouro">Logradouro *</label>
+              <label for="rua">Rua *</label>
               <div class="input-container">
-                <input id="logradouro" name="logradouro" type="text" required />
-                <div class="error-message">Por favor, informe o logradouro</div>
+                <input id="rua" name="rua" type="text" required />
+                <div class="error-message">Por favor, informe a rua</div>
               </div>
             </div>
             
@@ -606,8 +550,6 @@
       const messageDiv = document.getElementById('message');
       const saveStatus = document.getElementById('saveStatus');
       const progressFill = document.getElementById('progressFill');
-      const tabBtns = document.querySelectorAll('.tab-btn');
-      const tabContents = document.querySelectorAll('.tab-content');
       
       // Máscaras de entrada
       function maskCPF(v) {
@@ -662,20 +604,6 @@
       const rgEl = document.getElementById('rgNumero');
       if (rgEl) rgEl.addEventListener('input', e => {
         e.target.value = maskRG(e.target.value);
-      });
-      
-      // Sistema de abas
-      tabBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-          const tabId = btn.getAttribute('data-tab');
-          
-          // Ativar aba clicada
-          tabBtns.forEach(b => b.classList.remove('active'));
-          tabContents.forEach(c => c.classList.remove('active'));
-          
-          btn.classList.add('active');
-          document.getElementById(`${tabId}-tab`).classList.add('active');
-        });
       });
       
       // Validações
@@ -803,7 +731,7 @@
           data_nascimento: 'Data de Nascimento', sexo: 'Sexo', rg_numero: 'Número do RG', 
           rg_orgao: 'Órgão Exp. RG', rg_uf: 'UF Exp. RG', email: 'Email', cidade: 'Cidade natal', 
           estadoCivil: 'Estado Civil', profissao: 'Profissão', aposentado: 'Aposentado', 
-          telefone: 'Telefone Celular', senha: 'Senha Gov', cep: 'CEP', logradouro: 'Logradouro', 
+          telefone: 'Telefone Celular', senha: 'Senha Gov', cep: 'CEP', rua: 'Rua', 
           numero_res: 'Número', complemento: 'Complemento', bairro: 'Bairro', uf_res: 'UF', 
           municipio: 'Município'
         };
